@@ -13,11 +13,14 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "day1"  ],
   "exclude": [
     "node_modules",
     "./node_modules",
     "./node_modules/*",
     "./node_modules/@types/node/index.d.ts",
-  ]
+  ],
+  "ts-node": {
+    "swc": true
+  }
 }

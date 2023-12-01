@@ -4,7 +4,7 @@
   "description": "Solutions to the Advent of Code 2023",
   "main": "index.js",
   "scripts": {
-    "day1": "npx tsc ./day1/index.ts",
+    "day1": "ts-node --swc ./day1/index.ts",
     "test": "jest"
   },
   "keywords": [
