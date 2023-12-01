@@ -1,12 +1,28 @@
-// import axios from 'axios'
+const path = require('path')
+const fs = require('fs')
 
-async function getInput(url: string) {
-  // return axios.get(url)
-  return { data: 'Hello' }
+async function getInput(file: string) {
+  return fs.promises.readFile(path.join(__dirname, file), 'utf8')
 }
 
-getInput('https://adventofcode.com/2023/day/1/input')
+getInput('input.txt')
   .then(res => {
-    console.log(res.data)
+    const answer = res.split('\n')
+      .reduce((accum, row) => {
+        let first, last
+        
+        for (const char of row.split('')) {
+          if (!isNaN(char)) {
+            if (first === undefined) {
+              first = char
+            }
+            last = char
+          }
+        }
+        const rowNum = Number(first + last)
+        accum += isNaN(rowNum) ? 0 : rowNum
+        return accum
+      }, 0)
+    console.log(answer)
   })
   .catch(err => console.error(err))

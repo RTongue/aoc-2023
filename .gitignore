@@ -131,3 +131,7 @@ dist
 
 # transpiled .js files
 *.js
+
+# Advent of Code input files
+input.txt
+
