@@ -1,9 +1,12 @@
 import { getInput } from '../utils/getInput'
-import { processInput } from './processInput'
+import { processFirstPuzzle, processSecondPuzzle } from './processInput'
 
-getInput('https://adventofcode.com/2023/day/1/input')
+getInput('https://adventofcode.com/2023/day/2/input')
   .then(data => {
-    const answer = processInput(data)
-    console.log(answer)
+    const answerFirstPuzzle = processFirstPuzzle(data)
+    console.log('First puzzle:', answerFirstPuzzle)
+
+    const answerSecondPuzzle = processSecondPuzzle(data)
+    console.log('Second puzzle:', answerSecondPuzzle)
   })
   .catch(e => console.error(e))
