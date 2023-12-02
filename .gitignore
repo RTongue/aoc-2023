@@ -135,3 +135,5 @@ dist
 # Advent of Code input files
 input.txt
 
+# Cookies
+cookie.ts
