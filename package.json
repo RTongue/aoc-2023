@@ -6,9 +6,11 @@
   "scripts": {
     "day1": "ts-node --swc ./day1/index.ts",
     "day2": "ts-node --swc ./day2/index.ts",
+    "day3": "ts-node --swc ./day3/index.ts",
     "test": "jest",
     "test:day1": "jest day1/",
-    "test:day2": "jest day2/"
+    "test:day2": "jest day2/",
+    "test:day3": "jest day3/"
   },
   "keywords": [
     "advent",
