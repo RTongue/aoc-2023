@@ -1,7 +1,18 @@
-import { getInput } from './index.ts'
-import { processInput } from './processInput.ts'
+import { getInput, processInput } from './processInput.ts'
 
 describe('Day 1', () => {
+  it('twothree', () => {
+    const input = 'twothree'
+    const answer = processInput(input)
+    expect(answer).toEqual(23)
+  })
+
+  it('37', () => {
+    const input = '37'
+    const answer = processInput(input)
+    expect(answer).toEqual(37)
+  })
+
   it('two1nine', () => {
     const input = 'two1nine'
     const answer = processInput(input)

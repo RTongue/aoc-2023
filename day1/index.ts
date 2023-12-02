@@ -1,10 +1,4 @@
-const path = require('path')
-const fs = require('fs')
-import { processInput } from './processInput'
-
-export async function getInput(file: string) {
-  return fs.promises.readFile(path.join(__dirname, file), 'utf8')
-}
+import { getInput, processInput } from './processInput'
 
 getInput('input.txt')
   .then((res: string) => {
@@ -12,4 +6,3 @@ getInput('input.txt')
     console.log(answer)
   })
   .catch(err => console.error(err))
-
