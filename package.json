@@ -6,9 +6,13 @@
   "scripts": {
     "day1": "ts-node --swc ./day1/index.ts",
     "day2": "ts-node --swc ./day2/index.ts",
+    "day3": "ts-node --swc ./day3/index.ts",
+    "start": "npm run day1&&npm run day2&&npm run day3",
     "test": "jest",
     "test:day1": "jest day1/",
-    "test:day2": "jest day2/"
+    "test:day2": "jest day2/",
+    "test:day3": "jest day3/",
+    "test:day3:watch": "jest day3/ --watch"
   },
   "keywords": [
     "advent",
@@ -23,6 +27,7 @@
     "@swc/jest": "^0.2.29",
     "@types/jest": "^29.5.10",
     "@types/node": "^20.10.1",
+    "chalk": "^4.1.2",
     "jest": "^29.7.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.2",
