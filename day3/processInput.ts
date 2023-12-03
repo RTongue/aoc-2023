@@ -2,7 +2,13 @@ import { highlightChosenNums } from './debug'
 
 export const isNum = (char: string) => !isNaN(Number(char))
 
-export const isSymbol = (char: string) => !isNum(char) && char !== '.' && char !== ' ' && char !== undefined && char !== null
+export const isSymbol = (char: string) => !isNum(char) &&
+  char !== '.' && 
+  char !== ' ' && 
+  char !== undefined && 
+  char !== null
+
+export const isGear = (char: string) => char === '*'
 
 export function isSymbolAdjacent(schematicGrid: string[][], rowIndex: number, colIndex: number) {
   let startRow = rowIndex - 1
@@ -25,6 +31,42 @@ export function isSymbolAdjacent(schematicGrid: string[][], rowIndex: number, co
   return false
 }
 
+function getAdjacentNums(
+  schematicGrid: string[][], 
+  rowIndex: number, 
+  colIndex: number
+): NumberObj[] {
+  const numberObjList: NumberObj[] = []
+
+  let startRow = rowIndex - 1
+  let startCol = colIndex - 1
+  
+  for (let i = startRow; i < rowIndex + 2; i++) {
+    if (i < 0 || i > schematicGrid.length) continue
+    const row = schematicGrid[i]
+    if (row === undefined) continue
+
+    for (let j = startCol; j < colIndex + 2; j++) {
+      if (j < 0 || j > row.length) continue
+      const cell = row[j]
+      if (isNum(cell)) {
+        const numObj = findNum(row, i, j)
+
+        if (
+          numberObjList.find(n => n.rowIndex === numObj.rowIndex &&
+            n.startIndex === numObj.startIndex &&
+            n.endIndex === numObj.endIndex &&
+            n.num === numObj.num) === undefined
+        ) {
+          numberObjList.push(numObj)
+        }
+      }
+    }
+  }
+
+  return numberObjList
+}
+
 export type NumberObj = {
   rowIndex: number
   startIndex: number
@@ -32,7 +74,11 @@ export type NumberObj = {
   num: number
 }
 
-export function findNum(row: string[], rowIndex: number, colIndex: number): NumberObj {
+export function findNum(
+  row: string[], 
+  rowIndex: number, 
+  colIndex: number
+): NumberObj {
   let startIndex = colIndex
   let endIndex = colIndex
   // look backwards from start index
@@ -92,5 +138,27 @@ export function processInputPartOne(input: string): number {
 }
 
 export function processInputPartTwo(input: string): number {
-  return 0
+  const schematicGrid: string[][] = input.trim().split('\n')
+    .map(row => row.trim().split(''))
+  const gearAdjacentNums: NumberObj[][] = []
+  
+  for (let i = 0; i < schematicGrid.length; i++) {
+    const row = schematicGrid[i]
+
+    for (let j = 0; j < row.length; j++) {
+      const cell = row[j]
+
+      if (isGear(cell)) {
+        const numberObjList: NumberObj[] = getAdjacentNums(schematicGrid, i, j)
+        gearAdjacentNums.push(numberObjList)
+      }
+    }
+  }  
+
+  return gearAdjacentNums.reduce((accum, nums) => {
+    if (nums.length === 2) {
+      accum += nums[0].num * nums[1].num
+    }
+    return accum
+  }, 0)
 }

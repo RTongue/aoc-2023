@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { getInput } from '../utils/getInput'
-import { findNum, isNum, isSymbol, isSymbolAdjacent, processInputPartOne } from './processInput'
+import { findNum, isNum, isSymbol, isSymbolAdjacent, processInputPartOne, processInputPartTwo } from './processInput'
 import { highlightChosenNums } from './debug'
 
 describe('Day 3', () => {
@@ -98,7 +98,7 @@ describe('Day 3', () => {
     expect(answer).toEqual(4361)
   })
 
-  it.only('processes the input', async () => {
+  it('processes the input', async () => {
     const input = await getInput('https://adventofcode.com/2023/day/3/input')
     const answer = processInputPartOne(input)
     expect(answer).toEqual(528799)
@@ -137,6 +137,20 @@ describe('Day 3', () => {
         endIndex: 7, 
         num: 114 
       }])
+    })
+  })
+
+  describe('day 2', () => {
+    it('gets the gear ratio for the example input', () => {
+      const input = '467..114..\n...*......\n..35..633.\n......#...\n617*......\n.....+.58.\n..592.....\n......755.\n...$.*....\n.664.598..\n'
+      const answer = processInputPartTwo(input)
+      expect(answer).toEqual(467835)
+    })
+
+    it('gets the gear ratio for the actual input', async () => {
+      const input = await getInput('https://adventofcode.com/2023/day/3/input')
+      const answer = processInputPartTwo(input)
+      expect(answer).toEqual(84907174)
     })
   })
 })
