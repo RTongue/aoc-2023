@@ -10,7 +10,8 @@
     "test": "jest",
     "test:day1": "jest day1/",
     "test:day2": "jest day2/",
-    "test:day3": "jest day3/"
+    "test:day3": "jest day3/",
+    "test:day3:watch": "jest day3/ --watch"
   },
   "keywords": [
     "advent",
