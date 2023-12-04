@@ -1,5 +1,3 @@
-import chalk from 'chalk'
-
 interface ICard {
   cardNumber: number
   winningNumbers: Set<number>
@@ -17,7 +15,6 @@ class Card implements ICard {
 
   constructor(line: string) {
     this.parseCard(line)
-    // this.debug()
   }
 
   private mapNums = (numStr: string) => {
@@ -34,7 +31,7 @@ class Card implements ICard {
   parseCard = (line: string): ICard => {
     this.line = line
     const [cardNumString, rest] = line.split(':')
-    const [, numString] = cardNumString.split(' ')
+    const numString = cardNumString.match(/\d+/)
     const cardNumber = Number(numString)
     this.cardNumber = cardNumber
 
@@ -50,27 +47,6 @@ class Card implements ICard {
   hasMatch = (num: number) => {
     if (typeof num !== 'number') return false
     return this.winningNumbers.has(num)
-  }
-
-  debug = () => {
-    if (Array.from(this.winningNumbers).some(n => typeof n !== 'number')) {
-      console.log('Anomoly in winning numbers', this.cardNumber)
-    }
-
-    if (Array.from(this.ownersNumbers).some(n => typeof n !== 'number')) {
-      console.log('Anomoly in owners numbers', this.cardNumber)
-    }
-
-    let matches = 0
-
-    for (const num of this.ownersNumbers) {
-      if (this.hasMatch(num)) {
-        matches++
-        this.line = this.line.replaceAll(String(num), chalk.yellow(String(num)))
-      }
-    }
-    console.log(this.line, 'matches', matches)
-    // console.log('card', this)
   }
 }
 
@@ -93,8 +69,46 @@ export function processFirstPuzzle(input: string): number {
   }, 0)
 }
 
-export function processSecondPuzzle(input: string): number {
-  return 0
+function processCards(cards: Card[]): number[] {
+  const newCardsCounts: number[] = [0]
+
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i]
+    if (newCardsCounts[card.cardNumber] === undefined) {
+      newCardsCounts[card.cardNumber] = 1
+    }
+    const count = newCardsCounts[card.cardNumber]
+    
+    for (let times = 0; times < count; times++) {
+      let matches = 0
+      for (const num of card.ownersNumbers) {
+        if (card.hasMatch(num)) {
+          matches++
+        }
+      }
+
+      const nextCardNumber = card.cardNumber + 1
+      for (
+        let j = nextCardNumber;
+        j < nextCardNumber + matches;
+        j++
+      ) {
+        if (newCardsCounts[j] === undefined) {
+          newCardsCounts[j] = 1
+        }
+        newCardsCounts[j] += 1
+      }
+    }
+  }
+
+  return newCardsCounts
 }
 
-
+export function processSecondPuzzle(input: string): number {
+  const rows = input.trim().split('\n')
+  const cards: Card[] = parseCards(rows)
+  return processCards(cards).reduce((accum, numCards) => {
+    accum += numCards
+    return accum
+  }, 0)
+}

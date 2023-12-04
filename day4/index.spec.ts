@@ -75,10 +75,16 @@ describe('Day 2', () => {
   })
 
   describe('second puzzle', () => {
-    it.skip('processes the second puzzle input', async () => {
+    it('can process example', () => {
+      const input = example
+      const answer = processSecondPuzzle(input)
+      expect(answer).toEqual(30)
+    })
+
+    it.only('processes the second puzzle input', async () => {
       const input = await getInput('https://adventofcode.com/2023/day/4/input')
       const answer = processSecondPuzzle(input)
-      expect(answer).toEqual(input)
+      expect(answer).toEqual(5554894)
     })
   })
 })
