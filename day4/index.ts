@@ -1,7 +1,7 @@
 import { getInput } from '../utils/getInput'
 import { processFirstPuzzle, processSecondPuzzle } from './processInput'
 
-getInput('https://adventofcode.com/2023/day/1/input')
+getInput('https://adventofcode.com/2023/day/4/input')
   .then(data => {
     const answerFirstPuzzle = processFirstPuzzle(data)
     console.log('Part 1:', answerFirstPuzzle)
