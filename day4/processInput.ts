@@ -36,10 +36,8 @@ class Card implements ICard {
     this.cardNumber = cardNumber
 
     const [winningNumString, ownersNumString] = rest.split('|').map(s => s.trim())
-    const winningNumbers: Set<number> = new Set(this.mapNums(winningNumString))
-    this.winningNumbers = winningNumbers
-    const ownersNumbers: Set<number> = new Set(this.mapNums(ownersNumString))
-    this.ownersNumbers = ownersNumbers
+    this.winningNumbers = new Set(this.mapNums(winningNumString))
+    this.ownersNumbers = new Set(this.mapNums(ownersNumString))
 
     return this
   }
@@ -70,7 +68,7 @@ export function processFirstPuzzle(input: string): number {
 }
 
 function processCards(cards: Card[]): number[] {
-  const newCardsCounts: number[] = [0]
+  const newCardsCounts: number[] = new Array(cards.length + 1).fill(1)
 
   for (let i = 0; i < cards.length; i++) {
     const card = cards[i]
@@ -78,26 +76,24 @@ function processCards(cards: Card[]): number[] {
       newCardsCounts[card.cardNumber] = 1
     }
     const count = newCardsCounts[card.cardNumber]
-    
-    for (let times = 0; times < count; times++) {
-      let matches = 0
-      for (const num of card.ownersNumbers) {
-        if (card.hasMatch(num)) {
-          matches++
-        }
-      }
 
-      const nextCardNumber = card.cardNumber + 1
-      for (
-        let j = nextCardNumber;
-        j < nextCardNumber + matches;
-        j++
-      ) {
-        if (newCardsCounts[j] === undefined) {
-          newCardsCounts[j] = 1
-        }
-        newCardsCounts[j] += 1
+    let matches = 0
+    for (const num of card.ownersNumbers) {
+      if (card.hasMatch(num)) {
+        matches++
       }
+    }
+    
+    const nextCardNumber = card.cardNumber + 1
+    for (
+      let j = nextCardNumber;
+      j < nextCardNumber + matches;
+      j++
+    ) {
+      if (newCardsCounts[j] === undefined) {
+        newCardsCounts[j] = 1
+      }
+      newCardsCounts[j] += count
     }
   }
 
@@ -110,5 +106,5 @@ export function processSecondPuzzle(input: string): number {
   return processCards(cards).reduce((accum, numCards) => {
     accum += numCards
     return accum
-  }, 0)
+  }, 0) - 1
 }
