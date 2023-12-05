@@ -1,5 +1,5 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
 import { numStringTrie } from './numStringTrie'
 
 export async function getInput(file: string) {
