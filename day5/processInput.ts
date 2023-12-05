@@ -27,7 +27,7 @@ export class Almanac {
       line = line.trim()
       if (line !== '') {
         if (line.includes('to')) {
-          
+         const [sourceDestStr] = line.split(' ').map(s = s.trim()) 
         }
       }
 
