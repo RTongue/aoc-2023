@@ -1,7 +1,7 @@
 import { getInput } from '../utils/getInput'
 import { Almanac, processFirstPuzzle, processSecondPuzzle } from './processInput'
 
-describe('Day 2', () => {
+describe('Day 5', () => {
   let input = ''
   const actualInput = async (): Promise<string> => {
     if (input === '') {
