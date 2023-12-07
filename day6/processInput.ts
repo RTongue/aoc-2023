@@ -12,54 +12,62 @@ export class Race {
     let lowerBound = 0
     let upperBound = this.time
 
-    let lowerSearchNum = start
-    let lastLowerSearchNum = lowerBound
+    let leftLowerSearchNum = lowerBound
+    let rightLowerSearchNum = start
+    let midLowerSeaerchNum = 0
+    
     const cachedResults: boolean[] = []
-    let i = 10
-    while (i < 5) {
-      // console.log('lowerSearchNum', lowerSearchNum, 'lastLowerSearchNum', lastLowerSearchNum)
-      const willWin = this.getWillWin(lowerSearchNum )
-      cachedResults[lowerSearchNum] = willWin
-      if (willWin && cachedResults[lowerSearchNum - 1] === undefined) {
-        // continue search
-        lastLowerSearchNum = lowerSearchNum
-        lowerSearchNum = Math.floor(lowerSearchNum / 2)
-      } else if (!willWin && cachedResults[lowerSearchNum + 1] === undefined) {
-        lowerSearchNum = Math.floor((lastLowerSearchNum - lowerSearchNum) / 2) + lowerSearchNum
-      } else if (willWin && cachedResults[lowerSearchNum - 1] === false) {
-        break
-      } else if (!willWin && cachedResults[lowerSearchNum + 1] === true) {
-        lowerSearchNum = lowerSearchNum + 1
-        break
-      }
-      i++
-    }
-
-    let upperSearchNum = start
-    let lastUpperSearchNum = upperBound
-    while (i < 10) {
-      // console.log('upperSearchNum', upperSearchNum, 'lastUpperSearchNum', lastUpperSearchNum)
-      const willWin = this.getWillWin(upperSearchNum)
+    // let i = 0
+    while (true) {
+      midLowerSeaerchNum = Math.floor((leftLowerSearchNum + rightLowerSearchNum) / 2)
+      // console.log('leftLowerSearchNum', leftLowerSearchNum, 'midLowerSeaerchNum', midLowerSeaerchNum, 'rightLowerSearchNum', rightLowerSearchNum)
+      
+      const willWin = this.getWillWin(midLowerSeaerchNum)
+      cachedResults[midLowerSeaerchNum] = willWin
       // console.log('willWin', willWin)
-      cachedResults[upperSearchNum] = willWin
-      // console.log('cachedResults', cachedResults)
-      if (willWin && cachedResults[upperSearchNum + 1] === undefined) {
+      
+      if (willWin && cachedResults[midLowerSeaerchNum - 1] === undefined) {
         // continue search
-        upperSearchNum = Math.floor((lastUpperSearchNum - upperSearchNum) / 2) + upperSearchNum
-      } else if (!willWin && cachedResults[upperSearchNum - 1] === undefined) {
-        lastUpperSearchNum = upperSearchNum
-        upperSearchNum = Math.floor((upperSearchNum - lastUpperSearchNum) / 2) - upperSearchNum
-      } else if (willWin && cachedResults[upperSearchNum + 1] === false) {
+        rightLowerSearchNum = midLowerSeaerchNum
+      } else if (!willWin && cachedResults[midLowerSeaerchNum + 1] === undefined) {
+        // continue search
+        leftLowerSearchNum = midLowerSeaerchNum
+      } else if (willWin && cachedResults[midLowerSeaerchNum - 1] === false) {
         break
-      } else if (!willWin && cachedResults[upperSearchNum - 1] === true) {
-        upperSearchNum = upperSearchNum - 1
+      } else if (!willWin && cachedResults[midLowerSeaerchNum + 1] === true) {
+        midLowerSeaerchNum = midLowerSeaerchNum + 1
         break
       }
-      i++
+      // i++
     }
 
-    console.log(upperSearchNum, lowerSearchNum)
-    return upperSearchNum - lowerSearchNum + 1
+    let rightUpperSearchNum = upperBound
+    let leftUpperSearchNum = start
+    let midUpperSeaerchNum = Math.floor((rightUpperSearchNum + leftUpperSearchNum) / 2)
+
+    while (true) {
+      midUpperSeaerchNum = Math.floor((rightUpperSearchNum + leftUpperSearchNum) / 2)
+      // console.log('leftUpperSearchNum', leftUpperSearchNum, 'midUpperSeaerchNum', midUpperSeaerchNum, 'rightUpperSearchNum', rightUpperSearchNum)
+      const willWin = this.getWillWin(midUpperSeaerchNum)
+      // console.log('willWin', willWin)
+      cachedResults[midUpperSeaerchNum] = willWin
+
+      if (willWin && cachedResults[midUpperSeaerchNum + 1] === undefined) {
+        // continue search
+        leftUpperSearchNum = midUpperSeaerchNum
+      } else if (!willWin && cachedResults[midUpperSeaerchNum - 1] === undefined) {
+        rightUpperSearchNum = midUpperSeaerchNum
+      } else if (willWin && cachedResults[midUpperSeaerchNum + 1] === false) {
+        break
+      } else if (!willWin && cachedResults[midUpperSeaerchNum - 1] === true) {
+        midUpperSeaerchNum = midUpperSeaerchNum - 1
+        break
+      }
+      // i++
+    }
+
+    // console.log(midLowerSeaerchNum, midUpperSeaerchNum)
+    return midUpperSeaerchNum - midLowerSeaerchNum + 1
   }
 
   getWillWin(milliSecondsPressed: number): boolean {
@@ -82,9 +90,10 @@ export function processFirstPuzzle(input: string): number {
     races.push(new Race(time, distance))
   }
 
-  
-
-  return 0
+  return races.reduce((accum, race) => {
+    accum *= race.numWaysToBeatRecord()
+    return accum
+  }, 1)
 }
 
 export function processSecondPuzzle(input: string): number {

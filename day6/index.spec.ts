@@ -14,17 +14,6 @@ describe('Day 6', () => {
   Distance:  9  40  200`
 
   describe('first puzzle', () => {
-    it('processes the example input', () => {
-      const answer = processFirstPuzzle(exampleInput)
-      expect(answer).toEqual(0)
-    })
-
-    it('processes the first puzzle input', async () => {
-      const input = await actualInput()
-      const answer = processFirstPuzzle(input)
-      expect(answer).toEqual(0)
-    })
-
     it('gets if pressing the button for given seconds will beat the record', () => {
       const race = new Race(7, 9)
       expect(race.getWillWin(0)).toBe(false)
@@ -42,22 +31,43 @@ describe('Day 6', () => {
       expect(race.numWaysToBeatRecord()).toBe(4)
     })
 
-    it.only('gets the number of ways to win for race 2', () => {
+    it('gets the number of ways to win for race 2', () => {
       const race = new Race(15, 40)
       expect(race.numWaysToBeatRecord()).toBe(8)
+    })
+
+    it('gets the number of ways to win for race 3', () => {
+      const race = new Race(30, 200)
+      expect(race.numWaysToBeatRecord()).toBe(9)
+    })
+
+    it('processes the example input', () => {
+      const answer = processFirstPuzzle(exampleInput)
+      expect(answer).toEqual(288)
+    })
+
+    it('processes the first puzzle input', async () => {
+      const input = await actualInput()
+      const answer = processFirstPuzzle(input)
+      expect(answer).toEqual(211904)
     })
   })
 
   describe('second puzzle', () => {
-    it.skip('processes the example input', () => {
-      const answer = processSecondPuzzle(exampleInput)
-      expect(answer).toEqual(0)
+    const puzzleTwoExampleInput = `Time:      71530
+    Distance:  940200`
+
+    const puzzleTwoInput = `Time:        56717999
+    Distance:   334113513502430`
+    
+    it('processes the example input', () => {
+      const answer = processFirstPuzzle(puzzleTwoExampleInput)
+      expect(answer).toEqual(71503)
     })
 
-    it.skip('processes the second puzzle input', async () => {
-      const input = await actualInput()
-      const answer = processSecondPuzzle(input)
-      expect(answer).toEqual(0)
+    it('processes the second puzzle input', async () => {
+      const answer = processFirstPuzzle(puzzleTwoInput)
+      expect(answer).toEqual(43364472)
     })
   })
 })
