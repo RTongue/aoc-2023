@@ -81,11 +81,25 @@ QQQJA 483`
       expect(hands.every(h => h.handStr.length === 5)).toBe(true)
     })
 
-    it.only('sorting', () => {
-      
+    it('sorting', () => {
+      const exampleList = `25QT4 1
+      2857T 1
+      29KT8 1
+      257T9 1
+      2835A 1`
+
+      const hands = exampleList.split('\n')
+        .filter(s => s.trim().length > 0)
+        .map(s => new Hand(s.trim()))
+        .sort(compareHands)
+      expect(hands[0].handStr).toEqual('257T9')
+      expect(hands[1].handStr).toEqual('25QT4')
+      expect(hands[2].handStr).toEqual('2835A')
+      expect(hands[3].handStr).toEqual('2857T')
+      expect(hands[4].handStr).toEqual('29KT8')
     })
 
-    it.only('debug sorting', async () => {
+    it('debug sorting', async () => {
       const actualInputStr = await actualInput()
       const hands = actualInputStr.split('\n')
         .filter(s => s.trim(). length > 0)

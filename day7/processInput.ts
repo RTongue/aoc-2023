@@ -43,29 +43,36 @@ export class Hand {
     }
   }
 
-  compare(otherHand: Hand): number {
-    if (this.type !== otherHand.type) {
-      return this.type - otherHand.type
-    }
+  // compare(otherHand: Hand): number {
+  //   if (this.type !== otherHand.type) {
+  //     return this.type - otherHand.type
+  //   }
 
-    for (let i = 0; i < this.handStr.length; i++) {
-      const handCardValue = cardValueMap.indexOf(this.handStr[i])
-      const otherHandCardValue = cardValueMap.indexOf(otherHand.handStr[i])
-      return handCardValue - otherHandCardValue
-    }
-    return 0
-  }
+  //   for (let i = 0; i < this.handStr.length; i++) {
+  //     const handCardValue = cardValueMap.indexOf(this.handStr[i])
+  //     const otherHandCardValue = cardValueMap.indexOf(otherHand.handStr[i])
+  //     return handCardValue - otherHandCardValue
+  //   }
+  //   return 0
+  // }
 }
 
 export function compareHands(firstHand: Hand, secondHand: Hand) {
   if (firstHand.type !== secondHand.type) {
-    return firstHand.type > secondHand.type ? 1 : -1
+    return firstHand.type - secondHand.type
   }
 
   for (let i = 0; i < firstHand.handStr.length; i++) {
+    // console.log('first hand card', firstHand.handStr[i])
+    // console.log('second hand card', secondHand.handStr[i])
     const handCardValue = cardValueMap.indexOf(firstHand.handStr[i])
     const otherHandCardValue = cardValueMap.indexOf(secondHand.handStr[i])
-    return handCardValue > otherHandCardValue ? 1 : -1
+    // console.log('handCardValue', handCardValue)
+    // console.log('otherHandCardValue', otherHandCardValue)
+    // console.log('difference', otherHandCardValue - handCardValue)
+    if (handCardValue !== otherHandCardValue) {
+      return handCardValue - otherHandCardValue
+    }
   }
   return 0
 }
