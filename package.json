@@ -11,7 +11,8 @@
     "day5": "ts-node --swc ./day5/index.ts",
     "day6": "ts-node --swc ./day6/index.ts",
     "day7": "ts-node --swc ./day7/index.ts",
-    "start": "npm run day1 && npm run day2 && npm run day3 && npm run day4 && npm run day5 && npm run day6 && npm run day7",
+    "day8": "ts-node --swc ./day8/index.ts",
+    "start": "npm run day1 && npm run day2 && npm run day3 && npm run day4 && npm run day5 && npm run day6 && npm run day7 && npm run day8",
     "test": "jest",
     "test:day1": "jest day1/",
     "test:day2": "jest day2/",
@@ -24,7 +25,9 @@
     "test:day6": "jest day6/",
     "test:day6:watch": "jest day6/ --watch",
     "test:day7": "jest day7/",
-    "test:day7:watch": "jest day7/ --watch"
+    "test:day7:watch": "jest day7/ --watch",
+    "test:day8": "jest day8/",
+    "test:day8:watch": "jest day8/ --watch"
   },
   "keywords": [
     "advent",
