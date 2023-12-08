@@ -20,7 +20,7 @@ QQQJA 483`
 
   describe('first puzzle', () => {
     it('computes the hand type for three of a kind', () => {
-      const hand = new Hand('T55J5 684')
+      const hand = new Hand('T5545 684')
       expect(hand.type).toEqual(3)
       expect(hand.bid).toEqual(684)
     })
@@ -55,12 +55,12 @@ QQQJA 483`
       expect(hand.bid).toEqual(278)
     })
 
-    it('processes the example input for the first puzzle', () => {
+    it.skip('processes the example input for the first puzzle', () => {
       const answer = processFirstPuzzle(exampleInput)
       expect(answer).toEqual(6440)
     })
 
-    it('processes the actual input for the first puzzle', async () => {
+    it.skip('processes the actual input for the first puzzle', async () => {
       const actualInputStr = await actualInput()
       const answer = processFirstPuzzle(actualInputStr)
       expect(answer).toEqual(250944226)
@@ -71,8 +71,6 @@ QQQJA 483`
       const hands = actualInputStr.split('\n')
         .filter(s => s.trim(). length > 0)
         .map(s => new Hand(s.trim()))
-
-      console.log(hands)
       
       const handsSet = new Set(hands.map(h => h.handStr))
       expect(hands.length).toEqual(handsSet.size)
@@ -114,10 +112,55 @@ QQQJA 483`
   })
 
   describe('second puzzle', () => {
+    it('assigns the correct hand type based on wild cards for four of a kind', () => {
+      const hand = new Hand('T55J5 684')
+      expect(hand.type).toEqual(5)
+    })
+
+    it('assigns the correct hand type based on wild cards for high card', () => {
+      const hand = new Hand('23456 684')
+      expect(hand.type).toEqual(0)
+    })
+
+    it('assigns the correct hand type based on wild cards for two pair', () => {
+      const hand = new Hand('34453 684')
+      expect(hand.type).toEqual(2)
+    })
+
+    it('assigns the correct hand type based on wild cards for one pair', () => {
+      const hand = new Hand('J3456 684')
+      expect(hand.type).toEqual(1)
+    })
+
+    it('assigns the correct hand type based on wild cards for three of a kind', () => {
+      const hand = new Hand('J34J6 684')
+      expect(hand.type).toEqual(3)
+    })
+
+    it('assigns the correct hand type based on wild cards for a full house', () => {
+      const hand = new Hand('KKQQJ 684')
+      expect(hand.type).toEqual(4)
+    })
+
+    it('assigns the correct hand type based on wild cards for four of a kind', () => {
+      const hand = new Hand('TTT8J 684')
+      expect(hand.type).toEqual(5)
+    })
+
+    it('assigns the correct hand type based on wild cards for five of a kind', () => {
+      const hand = new Hand('JJJJJ 684')
+      expect(hand.type).toEqual(6)
+    })
+
     it('processes the example input for the second puzzle', () => {
       const answer = processSecondPuzzle(exampleInput)
-      expect(answer).toEqual(0)
+      expect(answer).toEqual(5905)
+    })
+
+    it('processes the actual input for the second puzzle', async () => {
+      const input = await actualInput()
+      const answer = processSecondPuzzle(input)
+      expect(answer).toEqual(252127335)
     })
   })
-
 })

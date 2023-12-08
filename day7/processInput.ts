@@ -1,4 +1,4 @@
-const cardValueMap = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
+const cardValueMap = ['J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A']
 
 export class Hand {
   type: number
@@ -15,16 +15,31 @@ export class Hand {
   getType(handStr: string): number {
     const cardCounts: number[] = new Array(cardValueMap.length)
       .fill(0)
+    let numWildCards = 0
     
     for (const char of handStr.split('')) {
+      if (char === 'J') numWildCards++
       const cardValue = cardValueMap.indexOf(char)
       if (cardValue === -1) {
         throw new Error(`found invalid card value ${char}`)
       }
-      // console.log('char', char, 'cardValue', cardValue)
       cardCounts[cardValue]++
     }
-    // console.log(cardCounts)
+
+    if (numWildCards > 0) {
+      cardCounts[0] = 0
+      let highestCount = 0
+      let highestCountIndex = 0
+      for (let i = 0; i < cardCounts.length; i++) {
+        const count = cardCounts[i]
+        if (count > highestCount) {
+          highestCount = count
+          highestCountIndex = i
+        }
+      }
+
+      cardCounts[highestCountIndex] += numWildCards
+    }
     
     const filteredCounts = cardCounts.filter(n => n !== 0)
     switch (filteredCounts.length) {
@@ -42,19 +57,6 @@ export class Hand {
         throw new Error(`Too many or not enough cards: ${filteredCounts.length}`)
     }
   }
-
-  // compare(otherHand: Hand): number {
-  //   if (this.type !== otherHand.type) {
-  //     return this.type - otherHand.type
-  //   }
-
-  //   for (let i = 0; i < this.handStr.length; i++) {
-  //     const handCardValue = cardValueMap.indexOf(this.handStr[i])
-  //     const otherHandCardValue = cardValueMap.indexOf(otherHand.handStr[i])
-  //     return handCardValue - otherHandCardValue
-  //   }
-  //   return 0
-  // }
 }
 
 export function compareHands(firstHand: Hand, secondHand: Hand) {
@@ -63,13 +65,8 @@ export function compareHands(firstHand: Hand, secondHand: Hand) {
   }
 
   for (let i = 0; i < firstHand.handStr.length; i++) {
-    // console.log('first hand card', firstHand.handStr[i])
-    // console.log('second hand card', secondHand.handStr[i])
     const handCardValue = cardValueMap.indexOf(firstHand.handStr[i])
     const otherHandCardValue = cardValueMap.indexOf(secondHand.handStr[i])
-    // console.log('handCardValue', handCardValue)
-    // console.log('otherHandCardValue', otherHandCardValue)
-    // console.log('difference', otherHandCardValue - handCardValue)
     if (handCardValue !== otherHandCardValue) {
       return handCardValue - otherHandCardValue
     }
@@ -90,5 +87,13 @@ export function processFirstPuzzle(input: string): number {
 }
 
 export function processSecondPuzzle(input: string): number {
-  return 0
+  return input.split('\n')
+    .filter(s => s.trim(). length > 0)
+    .map(s => new Hand(s.trim()))
+    .sort(compareHands)
+    .reduce((accum, hand, i) => {
+      const rank = i + 1
+      accum += hand.bid * rank
+      return accum
+    }, 0)
 }
