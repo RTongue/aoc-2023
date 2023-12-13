@@ -1,4 +1,3 @@
-
 import { getInput } from '../utils/getInput'
 import { DessertMap, parseInput, processFirstPuzzle, processSecondPuzzle } from './processInput'
 
